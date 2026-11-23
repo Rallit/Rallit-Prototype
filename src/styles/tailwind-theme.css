@@ -1,0 +1,92 @@
+/* Map the shared design tokens to Tailwind's utility namespaces. */
+@theme inline {
+  --color-fg-brand-strong: var(--fg-brand-strong);
+  --color-fg-brand-default: var(--fg-brand-default);
+  --color-fg-neutral-strong: var(--fg-neutral-strong);
+  --color-fg-neutral-default: var(--fg-neutral-default);
+  --color-fg-neutral-secondary: var(--fg-neutral-secondary);
+  --color-fg-neutral-tertiary: var(--fg-neutral-tertiary);
+  --color-fg-neutral-subtle: var(--fg-neutral-subtle);
+  --color-fg-neutral-inverse: var(--fg-neutral-inverse);
+  --color-fg-accent-default: var(--fg-accent-default);
+  --color-fg-accent-assistive: var(--fg-accent-assistive);
+  --color-fg-system-error: var(--fg-system-error);
+  --color-primary-default: var(--bg-primary-default);
+  --color-primary-strong: var(--bg-primary-strong);
+  --color-primary-inverse: var(--bg-primary-inverse);
+  --color-secondary-default: var(--bg-secondary-default);
+  --color-secondary-inverse: var(--bg-secondary-inverse);
+  --color-neutral-default: var(--bg-neutral-default);
+  --color-neutral-weak: var(--bg-neutral-weak);
+  --color-neutral-inverse: var(--bg-neutral-inverse);
+  --color-state-hover: var(--bg-state-hover);
+  --color-state-pressed: var(--bg-state-pressed);
+  --color-state-disabled: var(--bg-state-disabled);
+  --color-system-error: var(--bg-system-error);
+  --color-system-alert: var(--bg-system-alert);
+  --color-layer-overlay: var(--bg-layer-overlay);
+  --color-stroke-neutral-default: var(--border-neutral-default);
+  --color-stroke-neutral-weak: var(--border-neutral-weak);
+  --color-stroke-system-error: var(--border-system-error);
+  --color-stroke-brand-focus: var(--border-brand-focus);
+  --color-indicator-alert: var(--red-500);
+
+  --spacing-micro: var(--spacing-gap-micro);
+  --spacing-small: var(--spacing-gap-small);
+  --spacing-medium: var(--spacing-gap-medium);
+  --spacing-large: var(--spacing-gap-large);
+  --spacing-extra-large: var(--spacing-gap-extra-large);
+  --spacing-inset-micro: var(--spacing-padding-micro);
+  --spacing-inset-small: var(--spacing-padding-small);
+  --spacing-inset-medium: var(--spacing-padding-medium);
+  --spacing-inset-large: var(--spacing-padding-large);
+  --spacing-inset-large-plus: var(--spacing-padding-large-plus);
+  --spacing-inset-extra-large: var(--spacing-padding-extra-large);
+  --spacing-unit-4: var(--unit-4);
+  --spacing-unit-8: var(--unit-8);
+  --spacing-unit-12: var(--unit-12);
+  --spacing-unit-16: var(--unit-16);
+  --spacing-unit-20: var(--unit-20);
+  --spacing-unit-24: var(--unit-24);
+  --spacing-unit-32: var(--unit-32);
+  --spacing-unit-99: var(--unit-99);
+
+  --radius-sm: var(--radius-small);
+  --radius-md: var(--radius-medium);
+  --radius-lg: var(--radius-large);
+  --radius-xl: var(--radius-extra-large);
+  --radius-pill: var(--radius-full);
+
+  --shadow-toast: 0 2px 30px var(--gray-alpha-200);
+  --shadow-fab: 0 2.58px 19.351px var(--gray-alpha-100);
+}
+
+@utility state-overlay {
+  --state-overlay-color: transparent;
+  background-image: linear-gradient(
+    var(--state-overlay-color),
+    var(--state-overlay-color)
+  );
+}
+
+@utility state-overlay-hover {
+  --state-overlay-color: var(--bg-state-hover);
+}
+
+@utility state-overlay-pressed {
+  --state-overlay-color: var(--bg-state-pressed);
+}
+
+@utility bg-primary-inverse-overlay {
+  background-image: linear-gradient(
+    var(--bg-primary-inverse),
+    var(--bg-primary-inverse)
+  );
+}
+
+@utility pb-safe-inset-large {
+  padding-bottom: max(
+    var(--spacing-padding-large),
+    env(safe-area-inset-bottom, 0px)
+  );
+}
