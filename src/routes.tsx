@@ -1,7 +1,11 @@
-import type { ReactNode } from "react";
-import DesignSystemPage from "@/pages/DesignSystemPage";
-import ExampleMatchCreatePage from "@/pages/ExampleMatchCreatePage";
-import ExampleMatchListPage from "@/pages/ExampleMatchListPage";
+import { lazy, type ReactNode } from "react";
+
+// 화면(src/pages)은 lazy로 불러옵니다. 화면별로 파일이 나뉘어 첫 화면이 빨리 뜹니다.
+const DesignSystemPage = lazy(() => import("@/pages/DesignSystemPage"));
+const ExampleMatchCreatePage = lazy(
+  () => import("@/pages/ExampleMatchCreatePage"),
+);
+const ExampleMatchListPage = lazy(() => import("@/pages/ExampleMatchListPage"));
 
 export type PrototypeRoute = {
   path: string;
@@ -11,7 +15,8 @@ export type PrototypeRoute = {
   description?: string;
 };
 
-// 새 화면을 만들면 여기에 한 줄 추가합니다. title을 적으면 프로토타입 목록(/)에도 나옵니다.
+// 새 화면을 만들면 위에 lazy 한 줄, 아래 목록에 한 줄을 추가합니다.
+// title을 적으면 프로토타입 목록(/)에도 나옵니다.
 export const routes: PrototypeRoute[] = [
   {
     path: "/design-system",

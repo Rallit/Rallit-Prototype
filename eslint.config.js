@@ -83,5 +83,11 @@ export default defineConfig([
       ],
     },
   },
+  {
+    // routes.tsx는 화면을 lazy로 불러오면서 routes 목록을 내보내는 파일입니다.
+    // 이 파일을 고치면 빠른 새로고침 대신 페이지 전체가 새로고침됩니다.
+    files: ["src/routes.tsx"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
   eslintConfigPrettier,
 ]);
