@@ -5,6 +5,7 @@ import {
   LOGIN_PATH,
   ONBOARDING_INTRO_PATH,
   ONBOARDING_PATH,
+  SERVICE_HOME_PATH,
 } from "@/features/auth/paths";
 
 // 화면(src/pages)은 lazy로 불러옵니다. 화면별로 파일이 나뉘어 첫 화면이 빨리 뜹니다.
@@ -14,6 +15,7 @@ const ExampleMatchCreatePage = lazy(
   () => import("@/pages/ExampleMatchCreatePage"),
 );
 const ExampleMatchListPage = lazy(() => import("@/pages/ExampleMatchListPage"));
+const HomePage = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const OnboardingIntroPage = lazy(() => import("@/pages/OnboardingIntroPage"));
 const OnboardingPage = lazy(() => import("@/pages/OnboardingPage"));
@@ -58,6 +60,14 @@ export const routes: PrototypeRoute[] = [
     element: (
       <ProtectedRoute>
         <OnboardingPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: SERVICE_HOME_PATH,
+    element: (
+      <ProtectedRoute onboarding="completed">
+        <HomePage />
       </ProtectedRoute>
     ),
   },
