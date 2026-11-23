@@ -1,11 +1,14 @@
 import { lazy, type ReactNode } from "react";
+import { AUTH_CALLBACK_PATH, LOGIN_PATH } from "@/features/auth/paths";
 
 // 화면(src/pages)은 lazy로 불러옵니다. 화면별로 파일이 나뉘어 첫 화면이 빨리 뜹니다.
+const AuthCallbackPage = lazy(() => import("@/pages/AuthCallbackPage"));
 const DesignSystemPage = lazy(() => import("@/pages/DesignSystemPage"));
 const ExampleMatchCreatePage = lazy(
   () => import("@/pages/ExampleMatchCreatePage"),
 );
 const ExampleMatchListPage = lazy(() => import("@/pages/ExampleMatchListPage"));
+const LoginPage = lazy(() => import("@/pages/LoginPage"));
 
 export type PrototypeRoute = {
   path: string;
@@ -23,6 +26,16 @@ export const routes: PrototypeRoute[] = [
     element: <DesignSystemPage />,
     title: "디자인 시스템",
     description: "쓸 수 있는 색상, 타이포그래피, 컴포넌트 모음",
+  },
+  {
+    path: LOGIN_PATH,
+    element: <LoginPage />,
+    title: "로그인·온보딩",
+    description: "Rallit-FE의 소셜 로그인, 가입, 온보딩 2단계까지",
+  },
+  {
+    path: AUTH_CALLBACK_PATH,
+    element: <AuthCallbackPage />,
   },
   {
     path: "/examples/matches",
