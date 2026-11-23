@@ -6,6 +6,7 @@ import betterTailwindcss from "eslint-plugin-better-tailwindcss";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
+import rallit from "./eslint-rules/folder-structure.js";
 
 // 클래스 앞의 변형(hover:, md: 등)과 중요도 표시(!)를 허용하는 접두사
 const prefix = "^(?:\\S*:)?!?";
@@ -88,6 +89,12 @@ export default defineConfig([
     // 이 파일을 고치면 빠른 새로고침 대신 페이지 전체가 새로고침됩니다.
     files: ["src/routes.tsx"],
     rules: { "react-refresh/only-export-components": "off" },
+  },
+  {
+    // 파일 위치와 이름 규칙 (eslint-rules/folder-structure.js). 어기면 오류입니다.
+    files: ["src/**/*.{ts,tsx}"],
+    plugins: { rallit },
+    rules: { "rallit/folder-structure": "error" },
   },
   eslintConfigPrettier,
 ]);
