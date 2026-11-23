@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
-import { exampleMatchesMock } from "./mock";
-import type { ExampleMatch, NewExampleMatch } from "./types";
+import { exampleMatchesMock } from "@/mocks/exampleMatches";
+import type { ExampleMatch, NewExampleMatch } from "./exampleMatches.types";
 
 // 화면은 이 파일의 함수만 부릅니다.
 // Supabase가 연결되지 않았으면 목 데이터로 동작하고, 새로고침하면 추가한 데이터가 사라집니다.

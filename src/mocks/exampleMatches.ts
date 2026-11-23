@@ -1,4 +1,4 @@
-import type { ExampleMatch } from "./types";
+import type { ExampleMatch } from "@/apis/exampleMatches.types";
 
 // Supabase를 연결하기 전에 보여 줄 목 데이터입니다.
 export const exampleMatchesMock: ExampleMatch[] = [

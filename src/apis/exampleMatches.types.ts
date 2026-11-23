@@ -12,5 +12,3 @@ export type NewExampleMatch = Pick<
   ExampleMatch,
   "title" | "court_name" | "match_date" | "level"
 >;
-
-export const LEVELS = ["입문", "초급", "중급", "상급"] as const;

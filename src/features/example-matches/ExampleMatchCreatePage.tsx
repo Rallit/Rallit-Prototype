@@ -8,9 +8,9 @@ import { SelectionChip } from "@/design-system/SelectionChip";
 import { TextInputField } from "@/design-system/TextInputField";
 import { Toast } from "@/design-system/Toast";
 import toastAlertIcon from "../../../assets/icons/toast-alert-round.svg";
-import { createExampleMatch } from "./api";
+import { createExampleMatch } from "@/apis/exampleMatches";
 import { dateAfter, errorMessage } from "./format";
-import { LEVELS } from "./types";
+import { LEVELS } from "./form";
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
