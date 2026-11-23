@@ -1,5 +1,10 @@
 import { lazy, type ReactNode } from "react";
-import { AUTH_CALLBACK_PATH, LOGIN_PATH } from "@/features/auth/paths";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import {
+  AUTH_CALLBACK_PATH,
+  LOGIN_PATH,
+  ONBOARDING_INTRO_PATH,
+} from "@/features/auth/paths";
 
 // 화면(src/pages)은 lazy로 불러옵니다. 화면별로 파일이 나뉘어 첫 화면이 빨리 뜹니다.
 const AuthCallbackPage = lazy(() => import("@/pages/AuthCallbackPage"));
@@ -9,6 +14,7 @@ const ExampleMatchCreatePage = lazy(
 );
 const ExampleMatchListPage = lazy(() => import("@/pages/ExampleMatchListPage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
+const OnboardingIntroPage = lazy(() => import("@/pages/OnboardingIntroPage"));
 
 export type PrototypeRoute = {
   path: string;
@@ -36,6 +42,14 @@ export const routes: PrototypeRoute[] = [
   {
     path: AUTH_CALLBACK_PATH,
     element: <AuthCallbackPage />,
+  },
+  {
+    path: ONBOARDING_INTRO_PATH,
+    element: (
+      <ProtectedRoute onboarding="pending">
+        <OnboardingIntroPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/examples/matches",
