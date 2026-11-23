@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { DesignSystemPage } from "@/features/catalog/DesignSystemPage";
-import { ExampleMatchCreatePage } from "@/features/example-matches/ExampleMatchCreatePage";
-import { ExampleMatchListPage } from "@/features/example-matches/ExampleMatchListPage";
+import DesignSystemPage from "@/pages/DesignSystemPage";
+import ExampleMatchCreatePage from "@/pages/ExampleMatchCreatePage";
+import ExampleMatchListPage from "@/pages/ExampleMatchListPage";
 
 export type PrototypeRoute = {
   path: string;
@@ -11,7 +11,7 @@ export type PrototypeRoute = {
   description?: string;
 };
 
-// 새 화면을 만들면 여기에 한 줄 추가합니다. title을 적으면 홈 목록에도 나옵니다.
+// 새 화면을 만들면 여기에 한 줄 추가합니다. title을 적으면 프로토타입 목록(/)에도 나옵니다.
 export const routes: PrototypeRoute[] = [
   {
     path: "/design-system",

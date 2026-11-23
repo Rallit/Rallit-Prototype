@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from "react-router";
-import { HomePage } from "@/features/home/HomePage";
+import PrototypeIndexPage from "@/pages/PrototypeIndexPage";
 import { routes } from "@/routes";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<PrototypeIndexPage />} />
       {routes.map((route) => (
         <Route key={route.path} path={route.path} element={route.element} />
       ))}

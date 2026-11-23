@@ -7,14 +7,17 @@ import { PageLayout } from "@/design-system/PageLayout";
 import { isSupabaseConnected } from "@/apis/connection";
 import { listExampleMatches } from "@/apis/exampleMatches";
 import type { ExampleMatch } from "@/apis/exampleMatches.types";
-import { errorMessage, formatMatchDate } from "./format";
+import {
+  errorMessage,
+  formatMatchDate,
+} from "@/features/example-matches/format";
 
 type LoadState =
   | { status: "loading" }
   | { status: "error"; message: string }
   | { status: "ready"; matches: ExampleMatch[] };
 
-export function ExampleMatchListPage() {
+export default function ExampleMatchListPage() {
   const navigate = useNavigate();
   const [state, setState] = useState<LoadState>({ status: "loading" });
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { Header } from "@/design-system/Header";
 import { PageLayout } from "@/design-system/PageLayout";
 import { SelectionChip } from "@/design-system/SelectionChip";
-import { ComponentShowcase } from "./ComponentShowcase";
+import { ComponentShowcase } from "@/components/catalog/ComponentShowcase";
 import {
   backgroundColors,
   borderColors,
@@ -14,7 +14,7 @@ import {
   typography,
   type ColorToken,
   type SizeToken,
-} from "./tokens";
+} from "@/features/catalog/tokens";
 
 const sections = ["색상", "타이포그래피", "간격·모서리", "컴포넌트"] as const;
 type Section = (typeof sections)[number];
@@ -98,7 +98,7 @@ function SizeList({
   );
 }
 
-export function DesignSystemPage() {
+export default function DesignSystemPage() {
   const navigate = useNavigate();
   const [section, setSection] = useState<Section>("색상");
 
