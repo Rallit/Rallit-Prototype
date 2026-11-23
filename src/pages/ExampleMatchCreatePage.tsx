@@ -41,8 +41,8 @@ export default function ExampleMatchCreatePage() {
     try {
       await createExampleMatch({
         title: title.trim(),
-        court_name: courtName.trim(),
-        match_date: matchDate,
+        courtName: courtName.trim(),
+        matchDate,
         level,
       });
       void navigate("/examples/matches", { replace: true });

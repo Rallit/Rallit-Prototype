@@ -94,7 +94,7 @@ export default function ExampleMatchListPage() {
                 {match.title}
               </h2>
               <p className="typography-label-r-regular m-0 text-fg-neutral-secondary">
-                {formatMatchDate(match.match_date)} · {match.court_name}
+                {formatMatchDate(match.matchDate)} · {match.courtName}
               </p>
             </article>
           ))}

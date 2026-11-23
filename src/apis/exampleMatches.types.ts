@@ -1,14 +1,15 @@
-// Supabase 테이블(example_matches)의 컬럼 이름을 그대로 씁니다.
+// 화면에서 쓰는 타입은 camelCase입니다. DB 컬럼(snake_case)과의 변환은 exampleMatches.ts에서 합니다.
 export type ExampleMatch = {
   id: string;
   title: string;
-  court_name: string;
-  match_date: string; // YYYY-MM-DD
+  courtName: string;
+  /** "YYYY-MM-DD" */
+  matchDate: string;
   level: string;
-  created_at: string;
+  createdAt: string;
 };
 
 export type NewExampleMatch = Pick<
   ExampleMatch,
-  "title" | "court_name" | "match_date" | "level"
+  "title" | "courtName" | "matchDate" | "level"
 >;
