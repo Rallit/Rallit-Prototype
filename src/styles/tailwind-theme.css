@@ -19,6 +19,7 @@
   --color-neutral-default: var(--bg-neutral-default);
   --color-neutral-weak: var(--bg-neutral-weak);
   --color-neutral-inverse: var(--bg-neutral-inverse);
+  --color-common-black: var(--common-black);
   --color-state-hover: var(--bg-state-hover);
   --color-state-pressed: var(--bg-state-pressed);
   --color-state-disabled: var(--bg-state-disabled);
