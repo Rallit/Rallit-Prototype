@@ -44,7 +44,7 @@ cp .env.example .env.local
 
 - `.env.local`은 커밋하지 않습니다. 올라가면 CI가 실패합니다.
 - 운영 DB 값은 Vercel 환경변수에만 있습니다. `.env.local`에 운영 DB 값을 넣으면 개발 서버가 오류를 냅니다.
-- 테이블을 바꿀 때는 `supabase/migrations/`에 SQL을 남기고, 실험용 DB에 먼저 적용해 확인합니다. 운영 DB에는 그 PR을 `main`에 합치기 전에 적용합니다.
+- 테이블을 바꿀 때는 `supabase/migrations/`에 SQL을 남기고, 실험용 DB에 먼저 적용해 확인합니다. `main`에 합치면 Supabase GitHub 연동이 운영 DB에 자동으로 적용합니다. PR에서는 `Migrations` 검사가 빈 DB에 SQL을 적용해 봅니다.
 - `.env.local`을 비우면 Supabase 없이 목 데이터로 동작합니다.
 
 무료 플랜은 일주일 동안 사용량이 적으면 프로젝트가 일시정지됩니다. 실험용 DB가 멈춰 있으면 Supabase 대시보드에서 다시 켭니다.
