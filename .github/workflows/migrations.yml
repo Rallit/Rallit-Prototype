@@ -1,14 +1,12 @@
 name: Migrations
 
-# supabase/ 아래가 바뀐 PR만 검사합니다.
 # main에 합치면 Supabase GitHub 연동이 새 migration을 운영 DB에 바로 적용하므로,
 # 합치기 전에 여기서 문제를 찾습니다.
+# main 보호 규칙의 필수 검사이므로 모든 PR에서 돌고, supabase/가 바뀌지 않았으면 바로 통과합니다.
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened, labeled, unlabeled]
-    paths:
-      - "supabase/**"
   workflow_dispatch:
 
 permissions:
@@ -21,7 +19,6 @@ concurrency:
 jobs:
   rules:
     name: Migration rules
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
@@ -31,7 +28,17 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+      - name: Check whether supabase/ changed
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ] || [ -n "$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- supabase/)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "supabase/가 바뀌지 않아 검사를 건너뜁니다."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Check migration files
+        if: steps.changes.outputs.changed == 'true' && github.event_name == 'pull_request'
         run: |
           set -euo pipefail
           dir=supabase/migrations
@@ -85,9 +92,22 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Check whether supabase/ changed
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ] || [ -n "$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- supabase/)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "supabase/가 바뀌지 않아 검사를 건너뜁니다."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: supabase/setup-cli@v1
+        if: steps.changes.outputs.changed == 'true'
         with:
           version: 3.3.0
       # 빈 Supabase DB를 띄우고 supabase/migrations의 SQL을 순서대로 모두 적용합니다.
       - name: Apply all migrations
+        if: steps.changes.outputs.changed == 'true'
         run: supabase db start
