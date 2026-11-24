@@ -128,6 +128,7 @@ Rallit-FE와 같은 구조를 씁니다. 파일 위치와 이름은 `npm run lin
 - 테이블을 만들거나 바꾸면 `supabase/migrations/<YYYYMMDDHHMMSS>_<설명>.sql` 파일로 SQL을 남깁니다.
 - 이미 커밋한 migration 파일은 고치지 않습니다. 바꿀 내용은 새 파일로 추가합니다. 누군가 이미 실행했을 수 있기 때문입니다.
 - 같은 SQL 파일에서 RLS를 켜고 권한 정책을 함께 만듭니다. RLS를 켜고 정책이 없으면 조회 결과가 오류 없이 빈 목록으로 옵니다. 데이터가 안 보이면 정책부터 확인합니다.
+- 같은 SQL 파일에 `grant select, insert on public.<테이블> to anon, authenticated;`처럼 화면에서 쓰는 권한도 줍니다. Supabase는 새 테이블에 이 권한을 자동으로 주지 않는 쪽으로 기본값을 바꾸고 있고, 팀 프로젝트에도 적용돼 있습니다. 빠뜨리면 화면에서 "permission denied for table" 오류(401)가 납니다. 로그인한 사용자만 쓰는 테이블은 `authenticated`에만 줍니다. 예시: `supabase/migrations/20261124100000_grant_table_privileges.sql`
 - 사용자 본인 데이터는 `to authenticated`와 `using ((select auth.uid()) = user_id)`처럼 본인 행만 허용합니다. `auth.uid()`를 `(select ...)`로 감싸면 행마다 다시 계산하지 않아 빠릅니다.
 - `security definer` 함수에는 `set search_path = ''`를 붙이고, 실행 권한은 필요한 역할에만 줍니다. 다른 사용자의 데이터를 돌려주지 않게 합니다.
 - SQL을 실행한 뒤 Supabase 대시보드의 Advisors에서 보안 경고를 확인합니다.
