@@ -177,7 +177,9 @@ Rallit-FE와 같은 구조를 씁니다. 파일 위치와 이름은 `npm run lin
 
 ## Git
 
+- 작업 순서, 브랜치 이름, PR 규칙은 [CONTRIBUTING.md](CONTRIBUTING.md)를 따릅니다.
 - 커밋과 push는 사용자가 요청할 때만 합니다.
+- PR을 만들 때는 `.github/PULL_REQUEST_TEMPLATE.md`의 체크리스트를 채웁니다. 확인하지 못한 항목은 체크하지 않고 이유를 적습니다.
 - 커밋 메시지는 `feat: 매치 목록 화면 추가`처럼 `타입: 한국어 요약` 형식으로 씁니다. 타입은 `feat`, `fix`, `refactor`, `chore`, `docs` 중에서 고릅니다.
 - `.env.local` 같은 환경변수 파일은 커밋하지 않습니다. CI가 검사해서 올라가면 실패합니다.
 

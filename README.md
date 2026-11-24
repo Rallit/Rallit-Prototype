@@ -25,6 +25,8 @@ npm run dev
 
 작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다. Claude Code는 `CLAUDE.md`를 통해 같은 문서를 읽습니다.
 
+브랜치를 만들고 PR을 거쳐 베타에 올리는 순서는 [CONTRIBUTING.md](CONTRIBUTING.md)에 있습니다.
+
 ## Supabase 연결
 
 Supabase 프로젝트는 두 개입니다. 실험과 실제 사용자 데이터를 섞지 않기 위해서입니다.
