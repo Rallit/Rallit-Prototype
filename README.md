@@ -27,23 +27,25 @@ npm run dev
 
 ## Supabase 연결
 
-연결하지 않아도 목 데이터로 동작합니다. 여러 사람이 같은 데이터를 봐야 할 때 연결합니다.
+Supabase 프로젝트는 두 개입니다. 실험과 실제 사용자 데이터를 섞지 않기 위해서입니다.
 
-1. [Supabase](https://supabase.com)에서 프로젝트를 만듭니다.
-2. SQL Editor에서 `supabase/migrations/`의 SQL 파일을 순서대로 실행합니다.
-3. `.env.example`을 복사해 `.env.local`을 만들고 값을 채웁니다.
+| DB     | 프로젝트               | 쓰는 곳                              |
+| ------ | ---------------------- | ------------------------------------ |
+| 실험용 | `rallit-prototype-dev` | 로컬 개발, PR 미리보기 배포, AI 작업 |
+| 운영   | `rallit-prototype`     | `main` 배포 (실제 사용자)            |
 
-   ```sh
-   cp .env.example .env.local
-   ```
+로컬에서는 아래 한 줄이면 실험용 DB에 연결됩니다. 새 프로젝트를 만들 필요가 없습니다.
 
-   - 두 값 모두 Supabase 대시보드 상단의 Connect 버튼에서 확인할 수 있습니다.
-   - `VITE_SUPABASE_URL`: 프로젝트 URL
-   - `VITE_SUPABASE_PUBLISHABLE_KEY`: publishable key (secret key가 아닙니다)
+```sh
+cp .env.example .env.local
+```
 
-4. 개발 서버를 다시 실행합니다.
+- `.env.local`은 커밋하지 않습니다. 올라가면 CI가 실패합니다.
+- 운영 DB 값은 Vercel 환경변수에만 있습니다. `.env.local`에 운영 DB 값을 넣으면 개발 서버가 오류를 냅니다.
+- 테이블을 바꿀 때는 `supabase/migrations/`에 SQL을 남기고, 실험용 DB에 먼저 적용해 확인합니다. 운영 DB에는 그 PR을 `main`에 합치기 전에 적용합니다.
+- `.env.local`을 비우면 Supabase 없이 목 데이터로 동작합니다.
 
-무료 플랜은 일주일 동안 사용량이 적으면 프로젝트가 일시정지됩니다. 시연 전에는 Supabase 대시보드에서 프로젝트가 켜져 있는지 확인합니다.
+무료 플랜은 일주일 동안 사용량이 적으면 프로젝트가 일시정지됩니다. 실험용 DB가 멈춰 있으면 Supabase 대시보드에서 다시 켭니다.
 
 ## 소셜 로그인 설정
 
@@ -74,9 +76,9 @@ npm run dev
 
 Vercel로 배포합니다.
 
-1. Vercel에서 이 저장소를 Import합니다. Framework Preset은 Vite로 자동 인식됩니다.
-2. Settings > Environment Variables에 `.env.local`과 같은 이름으로 Supabase 값을 넣습니다.
-3. `main`에 push하면 자동으로 배포됩니다.
+- `main`에 합쳐지면 https://beta.rallit.co.kr 에 자동으로 배포됩니다. 실제 사용자가 쓰는 주소입니다.
+- PR을 만들면 미리보기 주소가 따로 생깁니다. 미리보기는 실험용 DB를 씁니다.
+- Vercel 환경변수: production에는 운영 DB 값, preview에는 실험용 DB 값이 들어 있습니다.
 
 `vercel.json`은 새로고침해도 화면 경로가 유지되도록 모든 경로를 `index.html`로 보냅니다.
 
