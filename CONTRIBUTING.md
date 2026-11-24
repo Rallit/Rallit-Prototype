@@ -18,7 +18,7 @@ flowchart LR
 
 1. **브랜치 만들기**
    - Claude에게: "main을 최신으로 받고 `feat/match-apply` 브랜치를 만들어 줘"
-   - 원본(`main`)에서 바로 작업하지 않습니다.
+   - 원본(`main`)에서 바로 작업하지 않습니다. `main`은 보호돼 있어 직접 올릴 수 없고, PR로만 합칠 수 있습니다.
 2. **화면 만들기**
    - Claude에게 만들 화면을 설명합니다. Claude는 [AGENTS.md](AGENTS.md)의 규칙을 따릅니다.
 3. **로컬에서 확인**

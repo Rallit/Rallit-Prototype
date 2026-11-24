@@ -142,8 +142,11 @@ Rallit-FE와 같은 구조를 씁니다. 파일 위치와 이름은 `npm run lin
 - 이미 커밋한 migration 파일은 고치지 않습니다. 바꿀 내용은 새 파일로 추가합니다. `main`에 합쳐진 파일은 이미 운영 DB에 적용돼 있기 때문입니다.
 - 파일 이름의 시각은 `main`의 마지막 migration보다 뒤여야 합니다. 앞서면 운영 DB에 적용되지 않습니다.
 - 운영 DB 적용과 화면 배포는 합칠 때 거의 동시에 시작되고, 어느 쪽이 먼저 끝날지 정해져 있지 않습니다. 테이블과 컬럼은 추가 위주로 바꾸고, 지금 배포된 화면이 쓰는 컬럼을 지우거나 이름을 바꾸지 않습니다.
+  - 화면이 쓰는 컬럼을 지우려면 PR을 두 번으로 나눕니다. 먼저 화면에서 그 컬럼을 쓰지 않게 바꿔 합치고, 다음 PR에서 컬럼을 지웁니다.
+  - 이름을 바꾸려면 새 컬럼 추가, 데이터 복사, 화면 전환, 옛 컬럼 삭제 순서로 나눕니다.
 - 데이터를 지우거나 바꾸는 SQL(`drop table`, `drop column`, `truncate`, `delete from`, 이름 바꾸기, 컬럼 타입 바꾸기)은 실제 사용자 데이터를 잃게 할 수 있습니다. 쓰기 전에 사용자에게 알리고, 관리자와 상의한 뒤 PR에 `운영 데이터 변경 확인` 라벨을 붙입니다.
-- `supabase/`가 바뀐 PR은 검사(`.github/workflows/migrations.yml`)가 위 규칙을 확인하고, 빈 DB에 모든 migration을 순서대로 적용해 봅니다. 이 검사가 실패한 PR은 합치지 않습니다.
+- `supabase/`가 바뀐 PR은 검사(`.github/workflows/migrations.yml`)가 위 규칙을 확인하고, 빈 DB에 모든 migration을 순서대로 적용해 봅니다. `main`은 보호돼 있어 직접 push할 수 없고, 검사가 실패한 PR은 합칠 수 없습니다.
+- 시험 데이터 정리처럼 운영 DB의 행만 지우거나 고치는 일(`delete`, `update`)은 migration으로 하지 않습니다. 관리자가 요청할 때만, 관리자의 터미널에서 대상 행을 먼저 조회해 보여 준 뒤 실행합니다. 테이블 구조를 바꾸는 SQL(`create`, `alter`, `drop`)은 운영 DB에 직접 실행하지 않습니다.
 - 같은 SQL 파일에서 RLS를 켜고 권한 정책을 함께 만듭니다. RLS를 켜고 정책이 없으면 조회 결과가 오류 없이 빈 목록으로 옵니다. 데이터가 안 보이면 정책부터 확인합니다.
 - 같은 SQL 파일에 `grant select, insert on public.<테이블> to anon, authenticated;`처럼 화면에서 쓰는 권한도 줍니다. Supabase는 새 테이블에 이 권한을 자동으로 주지 않는 쪽으로 기본값을 바꾸고 있고, 팀 프로젝트에도 적용돼 있습니다. 빠뜨리면 화면에서 "permission denied for table" 오류(401)가 납니다. 로그인한 사용자만 쓰는 테이블은 `authenticated`에만 줍니다. 예시: `supabase/migrations/20261124100000_grant_table_privileges.sql`
 - 사용자 본인 데이터는 `to authenticated`와 `using ((select auth.uid()) = user_id)`처럼 본인 행만 허용합니다. `auth.uid()`를 `(select ...)`로 감싸면 행마다 다시 계산하지 않아 빠릅니다.
