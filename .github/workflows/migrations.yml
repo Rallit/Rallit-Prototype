@@ -1,0 +1,93 @@
+name: Migrations
+
+# supabase/ 아래가 바뀐 PR만 검사합니다.
+# main에 합치면 Supabase GitHub 연동이 새 migration을 운영 DB에 바로 적용하므로,
+# 합치기 전에 여기서 문제를 찾습니다.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths:
+      - "supabase/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rules:
+    name: Migration rules
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BASE_REF: origin/${{ github.base_ref }}
+      ALLOW_DATA_CHANGE: ${{ contains(github.event.pull_request.labels.*.name, '운영 데이터 변경 확인') }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Check migration files
+        run: |
+          set -euo pipefail
+          dir=supabase/migrations
+          failed=0
+
+          # 1. 이미 합쳐진 migration은 운영 DB에 적용됐으므로 고치거나 지우지 않습니다.
+          changed=$(git diff --name-status --diff-filter=MDR "$BASE_REF"...HEAD -- "$dir" || true)
+          if [ -n "$changed" ]; then
+            echo "::error::이미 합쳐진 migration 파일은 고치거나 지우지 않습니다. 바꿀 내용은 새 파일로 추가해 주세요."
+            echo "$changed"
+            failed=1
+          fi
+
+          # 2. 새 파일은 이름 형식을 지키고, main의 마지막 migration보다 시각이 뒤여야 합니다.
+          last=$(git ls-tree --name-only "$BASE_REF" "$dir/" | xargs -n1 basename 2>/dev/null | grep -oE '^[0-9]{14}' | sort | tail -1 || true)
+          added=$(git diff --name-only --diff-filter=A "$BASE_REF"...HEAD -- "$dir")
+          for f in $added; do
+            name=$(basename "$f")
+            if ! echo "$name" | grep -qE '^[0-9]{14}_[a-z0-9_]+\.sql$'; then
+              echo "::error file=$f::파일 이름은 <YYYYMMDDHHMMSS>_<영어_소문자_설명>.sql 형식으로 씁니다."
+              failed=1
+              continue
+            fi
+            ts=${name:0:14}
+            if [ -n "$last" ] && [ "$ts" -le "$last" ]; then
+              echo "::error file=$f::main의 마지막 migration($last)보다 시각이 앞섭니다. 파일 이름의 시각을 지금 시각으로 바꿔 주세요."
+              failed=1
+            fi
+          done
+
+          # 3. 실제 사용자 데이터를 지우거나 바꾸는 SQL은 라벨로 한 번 더 확인합니다.
+          pattern='drop[[:space:]]+(table|schema|column)|truncate|delete[[:space:]]+from|rename[[:space:]]+(to|column)|alter[[:space:]]+column[[:space:]]+[a-z0-9_"]+[[:space:]]+(set[[:space:]]+data[[:space:]]+)?type'
+          for f in $added; do
+            hits=$(sed 's/--.*$//' "$f" | grep -inE "$pattern" || true)
+            if [ -n "$hits" ]; then
+              if [ "$ALLOW_DATA_CHANGE" = "true" ]; then
+                echo "::warning file=$f::운영 데이터를 바꾸는 SQL이 있지만 '운영 데이터 변경 확인' 라벨이 있어 통과합니다."
+              else
+                echo "::error file=$f::운영 DB의 데이터를 지우거나 바꾸는 SQL이 있습니다. 관리자와 상의한 뒤 PR에 '운영 데이터 변경 확인' 라벨을 붙여 주세요."
+                echo "$hits"
+                failed=1
+              fi
+            fi
+          done
+
+          exit $failed
+
+  apply:
+    name: Apply migrations to empty DB
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 3.3.0
+      # 빈 Supabase DB를 띄우고 supabase/migrations의 SQL을 순서대로 모두 적용합니다.
+      - name: Apply all migrations
+        run: supabase db start
