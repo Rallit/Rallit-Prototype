@@ -19,6 +19,7 @@ const HomePage = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const OnboardingIntroPage = lazy(() => import("@/pages/OnboardingIntroPage"));
 const OnboardingPage = lazy(() => import("@/pages/OnboardingPage"));
+const RankingPage = lazy(() => import("@/pages/RankingPage"));
 const SocialMatchRecommendPage = lazy(
   () => import("@/pages/SocialMatchRecommendPage"),
 );
@@ -73,6 +74,12 @@ export const routes: PrototypeRoute[] = [
         <HomePage />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/ranking",
+    element: <RankingPage />,
+    title: "랭킹",
+    description: "기간별 승점 순위 (목 데이터)",
   },
   {
     path: "/examples/matches",
