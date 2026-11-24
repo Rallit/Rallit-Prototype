@@ -20,6 +20,9 @@ const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const OnboardingIntroPage = lazy(() => import("@/pages/OnboardingIntroPage"));
 const OnboardingPage = lazy(() => import("@/pages/OnboardingPage"));
 const RankingPage = lazy(() => import("@/pages/RankingPage"));
+const SocialMatchRecommendPage = lazy(
+  () => import("@/pages/SocialMatchRecommendPage"),
+);
 
 export type PrototypeRoute = {
   path: string;
@@ -83,6 +86,12 @@ export const routes: PrototypeRoute[] = [
     element: <ExampleMatchListPage />,
     title: "예시: 매치 목록",
     description: "Supabase 데이터를 읽고 쓰는 화면 예시",
+  },
+  {
+    path: "/social-match/recommend",
+    element: <SocialMatchRecommendPage />,
+    title: "소셜매치: 추천 상대",
+    description: "조건에 맞는 상대를 추천받고 제안 보내기",
   },
   {
     path: "/examples/matches/new",
