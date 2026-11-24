@@ -4,17 +4,20 @@ import { Badge } from "@/design-system/Badge";
 import { BottomCTA } from "@/design-system/BottomCTA";
 import { Header } from "@/design-system/Header";
 import { PageLayout } from "@/design-system/PageLayout";
-import { isSupabaseConfigured } from "@/lib/supabase";
-import { listExampleMatches } from "./api";
-import { errorMessage, formatMatchDate } from "./format";
-import type { ExampleMatch } from "./types";
+import { isSupabaseConnected } from "@/apis/connection";
+import { listExampleMatches } from "@/apis/exampleMatches";
+import type { ExampleMatch } from "@/apis/exampleMatches.types";
+import {
+  errorMessage,
+  formatMatchDate,
+} from "@/features/example-matches/format";
 
 type LoadState =
   | { status: "loading" }
   | { status: "error"; message: string }
   | { status: "ready"; matches: ExampleMatch[] };
 
-export function ExampleMatchListPage() {
+export default function ExampleMatchListPage() {
   const navigate = useNavigate();
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
@@ -55,7 +58,7 @@ export function ExampleMatchListPage() {
       }
     >
       <div className="flex flex-col gap-medium py-inset-large">
-        {!isSupabaseConfigured && (
+        {!isSupabaseConnected && (
           <p className="typography-caption-r-medium m-0 rounded-md bg-secondary-inverse px-inset-medium py-inset-small break-keep text-fg-accent-default">
             Supabase 연결 전이라 목 데이터를 보여 줘요. 새로고침하면 추가한
             매치가 사라져요.
@@ -91,7 +94,7 @@ export function ExampleMatchListPage() {
                 {match.title}
               </h2>
               <p className="typography-label-r-regular m-0 text-fg-neutral-secondary">
-                {formatMatchDate(match.match_date)} · {match.court_name}
+                {formatMatchDate(match.matchDate)} · {match.courtName}
               </p>
             </article>
           ))}

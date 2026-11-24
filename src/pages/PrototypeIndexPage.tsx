@@ -1,10 +1,10 @@
 import { Link } from "react-router";
-import forwardIcon from "../../../assets/icons/forward.svg";
+import forwardIcon from "../../assets/icons/forward.svg";
 import { Header } from "@/design-system/Header";
 import { PageLayout } from "@/design-system/PageLayout";
 import { routes } from "@/routes";
 
-export function HomePage() {
+export default function PrototypeIndexPage() {
   const listed = routes.filter((route) => route.title);
 
   return (

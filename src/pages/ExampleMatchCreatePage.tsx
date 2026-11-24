@@ -7,10 +7,10 @@ import { PageLayout } from "@/design-system/PageLayout";
 import { SelectionChip } from "@/design-system/SelectionChip";
 import { TextInputField } from "@/design-system/TextInputField";
 import { Toast } from "@/design-system/Toast";
-import toastAlertIcon from "../../../assets/icons/toast-alert-round.svg";
-import { createExampleMatch } from "./api";
-import { dateAfter, errorMessage } from "./format";
-import { LEVELS } from "./types";
+import toastAlertIcon from "../../assets/icons/toast-alert-round.svg";
+import { createExampleMatch } from "@/apis/exampleMatches";
+import { LEVELS } from "@/features/example-matches/form";
+import { dateAfter, errorMessage } from "@/features/example-matches/format";
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -23,7 +23,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-export function ExampleMatchCreatePage() {
+export default function ExampleMatchCreatePage() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [courtName, setCourtName] = useState("");
@@ -41,8 +41,8 @@ export function ExampleMatchCreatePage() {
     try {
       await createExampleMatch({
         title: title.trim(),
-        court_name: courtName.trim(),
-        match_date: matchDate,
+        courtName: courtName.trim(),
+        matchDate,
         level,
       });
       void navigate("/examples/matches", { replace: true });
