@@ -1,0 +1,12 @@
+# Supabase CLI와 Supabase GitHub 연동이 읽는 설정입니다.
+# main에 합치면 Supabase가 supabase/migrations의 새 SQL을 운영 DB에 자동으로 적용합니다.
+# PR 검사(CI)는 이 설정으로 빈 DB를 띄워 모든 SQL이 순서대로 적용되는지 확인합니다.
+project_id = "rallit-prototype"
+
+[db]
+# 운영 DB의 Postgres 버전과 맞춥니다.
+major_version = 17
+
+[db.seed]
+# 시험 데이터는 실험용 DB와 src/mocks에만 넣습니다.
+enabled = false
